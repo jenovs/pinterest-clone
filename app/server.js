@@ -10,14 +10,13 @@ const TwitterStrategy = require('passport-twitter');
 const session = require('express-session');
 const mongoose = require('./mongoose');
 const bodyParser = require('body-parser');
-const books = require('./routes/books');
-const users = require('./routes/users');
-const trades = require('./routes/trades');
 
-const Book = require('./models/book');
-const User = require('./models/user');
+const pins = require('./routes/pins')
 
-const { usersList } = require('./seed/seed');
+// const Book = require('./models/book');
+// const User = require('./models/user');
+
+// const { usersList } = require('./seed/seed');
 
 const {
   PORT,
@@ -66,26 +65,26 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
-
-app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', {failureRedirect: '/fail'}),
-  (req, res, next) => {
-    // console.log(req.user);
-    User.findOne({username: req.user})
-    .then(user => {
-      if(!user) {
-        const newUser = new User({
-          username: req.user
-        })
-        return newUser.save();
-      }
-    })
-    .then(() => {
-      res.redirect('/');
-    })
-  }
-);
+// app.get('/auth/twitter', passport.authenticate('twitter'));
+//
+// app.get('/auth/twitter/callback',
+//   passport.authenticate('twitter', {failureRedirect: '/fail'}),
+//   (req, res, next) => {
+//     // console.log(req.user);
+//     User.findOne({username: req.user})
+//     .then(user => {
+//       if(!user) {
+//         const newUser = new User({
+//           username: req.user
+//         })
+//         return newUser.save();
+//       }
+//     })
+//     .then(() => {
+//       res.redirect('/');
+//     })
+//   }
+// );
 
 app.get('/auth/logout', (req, res) => {
   req.logout();
@@ -94,7 +93,7 @@ app.get('/auth/logout', (req, res) => {
 
 // Temp hack to do testing.
 // Mock the loggded in user.
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
     req.user = req.headers['x-test-user'];
     next();
@@ -102,11 +101,6 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 app.use('/api/pins', pins);
-app.use('/api/users', users);
-
-// io.on('connection', () => {
-//   console.log('user connected');
-// })
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
