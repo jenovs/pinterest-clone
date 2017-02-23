@@ -1,0 +1,14 @@
+node_modules
+playground
+
+app/public/js/bundle.js
+app/public/js/bundle.min.js
+app/public/styles/main.css
+app/public/styles/main.min.css
+app/config/config.json
+
+ecosystem.config.js
+notes.md
+npm-debug.log
+
+__*
