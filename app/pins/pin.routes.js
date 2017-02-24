@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { getPins, addPin, deletePin } = require('./../controllers/pins');
+const { getPins, addPin, deletePin } = require('./pin.actions');
 
 let checkAuth;
 

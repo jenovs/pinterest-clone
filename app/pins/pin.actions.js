@@ -1,6 +1,5 @@
-const Pin = require('./../models/pin');
-const Creator = require('./../models/creator');
-const { emitUpdate } = require('./helpers');
+const Pin = require('./pin.model');
+const { emitUpdate } = require('./../helpers');
 
 function getPins (req, res) {
   Pin.find()
@@ -47,7 +46,7 @@ function deletePin (req, res) {
   })
   .then((data) => {
     if (!data) throw 400;
-    console.log(data);
+    // console.log(data);
     res.send();
   })
   .catch(e => {

@@ -1,6 +1,6 @@
 const { ObjectID } = require('mongodb');
 const mongoose = require('./../mongoose');
-const Pin = require('./../models/pin');
+const Pin = require('./../pins/pin.model');
 const Creator = require('./../models/creator');
 
 const creator0Id = new ObjectID();
@@ -42,11 +42,6 @@ const pinsList = [
     _creator: creator1Id
   }
 ];
-
-// let c = -1;
-// creatorsList.forEach(creator => {
-//   creator.pins.push(pinsList[++c]._id, pinsList[++c]._id);
-// });
 
 function seed(done) {
   const { pins, creators } = mongoose.connection.collections;

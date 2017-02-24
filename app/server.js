@@ -11,14 +11,9 @@ const session = require('express-session');
 const mongoose = require('./mongoose');
 const bodyParser = require('body-parser');
 
-const pins = require('./routes/pins')
+const pins = require('./pins/pin.routes')
 
 const { seed, usersList, booksList } = require('./seed/seed');
-
-// const Book = require('./models/book');
-// const User = require('./models/user');
-
-// const { usersList } = require('./seed/seed');
 
 const {
   PORT,

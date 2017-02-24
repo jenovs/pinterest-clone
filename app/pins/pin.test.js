@@ -3,8 +3,8 @@ const app = require('./../server-test');
 // const request = require('supertest');
 const expect = require('expect');
 const { seed, creatorsList, pinsList } = require('./../seed/seed');
-const Pin = require('./../models/pin');
-const Creator = require('./../models/creator');
+const Pin = require('./pin.model');
+// const Creator = require('./../models/creator');
 
 const assertPinCount = (done) => {
   Pin.find()
