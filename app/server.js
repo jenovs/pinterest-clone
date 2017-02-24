@@ -13,6 +13,8 @@ const bodyParser = require('body-parser');
 
 const pins = require('./routes/pins')
 
+const { seed, usersList, booksList } = require('./seed/seed');
+
 // const Book = require('./models/book');
 // const User = require('./models/user');
 
@@ -101,6 +103,13 @@ if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/pins', pins);
+
+// Seed db
+const done = () => {};
+app.use('/api/seed', (req, res) => {
+  seed(done);
+  res.send('Seed OK');
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
