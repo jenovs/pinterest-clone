@@ -10,10 +10,10 @@ const PinSchema = new Schema({
     ref: 'creator',
     required: true
   },
-  likedBy: {
+  likedBy: [{
     type: Schema.Types.ObjectId,
     ref: 'creator'
-  }
+  }]
 });
 
 module.exports = mongoose.model('pin', PinSchema);

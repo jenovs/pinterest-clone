@@ -3,8 +3,16 @@ const Creator = require('./../models/creator');
 const { emitUpdate } = require('./helpers');
 
 function getPins (req, res) {
-  console.log('getting pins...');
-  res.send('pins');
+  Pin.find()
+  .sort('_id')
+  .populate('_creator')
+  .then(pins => {
+    res.send(pins);
+  })
+  .catch(e => {
+    console.log(e)
+    res.status(400).send();
+  });
 }
 
 function addPin (req, res) {
