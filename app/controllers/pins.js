@@ -16,9 +16,30 @@ function getPins (req, res) {
 }
 
 function addPin (req, res) {
-  const {caption, imgUrl} = req.body
-  console.log('adding pin...', req.user);
-  res.send(`pin with a caption "${caption}" added`)
+  if (!req.user) return res.status(401).send();
+  const { caption, imageUrl } = req.body
+  if (!caption || !imageUrl) return res.status(400).send();
+  const username = req.user;
+  let updCreator;
+  const newPin = new Pin({
+    imageUrl,
+    caption
+  });
+
+  Creator.findOne({username})
+  .then(creator => {
+    updCreator = creator;
+    newPin._creator = updCreator._id;
+    updCreator.pins.push(newPin);
+    return Promise.all([updCreator.save(), newPin.save()])
+  })
+  .then(() => {
+    res.send();
+  })
+  .catch(e => {
+    console.log(e);
+    res.status(400).send()
+  });
 }
 
 function deletePin (req, res) {

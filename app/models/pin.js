@@ -5,6 +5,7 @@ mongoose.Promise = global.Promise;
 
 const PinSchema = new Schema({
   imageUrl: String,
+  caption: String,
   _creator: {
     type: Schema.Types.ObjectId,
     ref: 'creator',
