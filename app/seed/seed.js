@@ -39,7 +39,8 @@ const pinsList = [
   }, {
     _id: pin3Id,
     imageUrl: 'some fake url',
-    _creator: creator1Id
+    _creator: creator1Id,
+    likedBy: [creator0Id]
   }
 ];
 

@@ -77,7 +77,10 @@ describe('Test /api/pins router', () => {
       .post('/api/pins')
       .send(newPin)
       .expect(401)
-      .end(done);
+      .end(err => {
+        if (err) return done(err);
+        assertPinCount(done);
+      });
     });
 
     it('Should not add pin if imageUrl is missing', (done) => {
@@ -141,7 +144,10 @@ describe('Test /api/pins router', () => {
       app
       .delete(`/api/pins/${pinsList[0]._id}`)
       .expect(401)
-      .end(done);
+      .end(err => {
+        if (err) return done(err);
+        assertPinCount(done);
+      });
     });
 
     it('Should handle invalid pin id', (done) => {
@@ -165,5 +171,53 @@ describe('Test /api/pins router', () => {
         assertPinCount(done)
       });
     });
+  });
+
+  describe('PUT /api/pins', () => {
+
+    it('Should add my like to pin', (done) => {
+      app
+      .put(`/api/pins/${pinsList[2]._id}`)
+      .set('x-test-user', JSON.stringify(user))
+      .expect(200)
+      .end(err => {
+        if (err) return done(err);
+
+        Pin.findById(pinsList[2]._id)
+        .then(pin => {
+          expect(pin.likedBy.length).toBe(1);
+          expect(pin.likedBy[0]).toEqual(user._id);
+          done();
+        })
+        .catch(e => done(e));
+      });
+    });
+
+    it('Should remove my like from pin', (done) => {
+      app
+      .put(`/api/pins/${pinsList[3]._id}`)
+      .set('x-test-user', JSON.stringify(user))
+      .expect(200)
+      .end(err => {
+        if (err) return done(err);
+
+        Pin.findById(pinsList[3]._id)
+        .then(pin => {
+          expect(pin.likedBy.length).toBe(0);
+          done();
+        })
+        .catch(e => done(e));
+      });
+    });
+
+    it('Should return 401 if unauthorized', (done) => {
+      app
+      .delete(`/api/pins/${pinsList[0]._id}`)
+      .expect(401)
+      .end(err => {
+        if (err) return done(err);
+        assertPinCount(done);
+      });
+    })
   });
 });

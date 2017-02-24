@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { getPins, addPin, deletePin } = require('./pin.actions');
+const { getPins, addPin, deletePin, toggleLike } = require('./pin.actions');
 
 let checkAuth;
 
@@ -16,10 +16,11 @@ if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
   }
 }
 
-// Get an array of all pins
 router.get('/', getPins);
 
 router.post('/', checkAuth, addPin);
+
+router.put('/:id', checkAuth, toggleLike);
 
 router.delete('/:id', checkAuth, deletePin);
 

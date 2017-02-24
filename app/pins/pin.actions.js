@@ -37,7 +37,7 @@ function addPin (req, res) {
   });
 }
 
-function deletePin (req, res) {
+function deletePin(req, res) {
   if (!req.user) return res.status(401).send();
 
   Pin.findOneAndRemove({
@@ -46,7 +46,6 @@ function deletePin (req, res) {
   })
   .then((data) => {
     if (!data) throw 400;
-    // console.log(data);
     res.send();
   })
   .catch(e => {
@@ -55,8 +54,26 @@ function deletePin (req, res) {
   })
 }
 
+function toggleLike(req, res) {
+  if (!req.user) return res.status(401).send();
+  
+  Pin.findById(req.params.id)
+  .then(pin => {
+    const likedId = pin.likedBy.indexOf(req.user._id)
+    if (!~likedId) pin.likedBy.push(req.user._id);
+    else pin.likedBy.splice(likedId, 1);
+    return pin.save();
+  })
+  .then(() => res.send())
+  .catch(e => {
+    console.log(e);
+    res.status(400).send();
+  })
+}
+
 module.exports = {
   getPins,
   addPin,
-  deletePin
+  deletePin,
+  toggleLike
 };
