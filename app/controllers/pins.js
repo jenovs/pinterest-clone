@@ -43,8 +43,31 @@ function addPin (req, res) {
 }
 
 function deletePin (req, res) {
-  console.log('deleting pin :( ...');
-  res.send(`pin ${req.params.id} deleted`)
+  if (!req.user) return res.status(401).send();
+  // console.log('deleting pin...', req.params.id);
+  const pinId = req.params.id;
+  const username = req.user;
+  // let updCreator, pinInd;
+  Creator.findOne({username})
+  .then(creator => {
+    // console.log(creator);
+    const pinInd = creator.pins.indexOf(pinId);
+    if (!~pinInd) throw 400;
+    // updCreator = creator;
+    creator.pins.splice(pinInd, 1);
+    return Promise.all([
+      Pin.findByIdAndRemove(pinId),
+      creator.save()
+    ]);
+  })
+  .then(() => {
+    res.send();
+  })
+  .catch(e => {
+    // console.log(e);
+    res.status(400).send()
+  })
+  // res.send(`pin ${req.params.id} deleted`)
 }
 
 module.exports = {

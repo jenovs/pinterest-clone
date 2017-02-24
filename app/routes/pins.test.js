@@ -89,7 +89,7 @@ describe('Test /api/pins router', () => {
       .send({caption: newPin.caption})
       .expect(400)
       .end(err => {
-        if (err) done(err);
+        if (err) return done(err);
         assertPinCount(done)
       });
     });
@@ -101,7 +101,7 @@ describe('Test /api/pins router', () => {
       .send({imageUrl: newPin.imageUrl})
       .expect(400)
       .end(err => {
-        if (err) done(err);
+        if (err) return done(err);
         assertPinCount(done)
       });
     });
@@ -113,9 +113,67 @@ describe('Test /api/pins router', () => {
       .send({})
       .expect(400)
       .end(err => {
-        if (err) done(err);
+        if (err) return done(err);
         assertPinCount(done)
       });
     });
   });
+
+  describe('DELETE /api/pins/:id', () => {
+
+    const username = creatorsList[0].username;
+
+    it('Should delete my a pin by id', (done) => {
+      app
+      .delete(`/api/pins/${pinsList[0]._id}`)
+      .set('x-test-user', username)
+      .expect(200)
+      .end(err => {
+        if (err) done(err);
+
+        Pin.find()
+        .then(pins => {
+          expect(pins.length).toBe(pinsList.length - 1);
+          expect(pins.indexOf(pinsList[0]._id)).toBe(-1);
+
+          return Creator.findOne({username})
+        })
+        .then(creator => {
+          expect(creator.pins.length).toBe(1);
+          expect(creator.pins[0]).toEqual(pinsList[1]._id)
+          done();
+        })
+        .catch(e => done(e));
+      });
+    });
+
+    it('Should return 401 if unauthorized', (done) => {
+      app
+      .delete(`/api/pins/${pinsList[0]._id}`)
+      .expect(401)
+      .end(done);
+    });
+
+    it('Should handle invalid pin id', (done) => {
+      app
+      .delete('/api/pins/123abc')
+      .set('x-test-user', username)
+      .expect(400)
+      .end(err => {
+        if (err) return done(err);
+        assertPinCount(done)
+      });
+    });
+
+    it('Should not delete pin I do not own', (done) => {
+      app
+      .delete(`/api/pins/${pinsList[2]._id}`)
+      .set('x-test-user', username)
+      .expect(400)
+      .end(err => {
+        if (err) return done(err);
+        assertPinCount(done)
+      });
+    });
+  })
 });
