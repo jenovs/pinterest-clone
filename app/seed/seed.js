@@ -15,11 +15,11 @@ const creatorsList = [
   {
     _id: creator0Id,
     username: 'Jane',
-    pins: []
+    profileImg: 'Link to img'
   }, {
     _id: creator1Id,
     username: 'John',
-    pins: []
+    profileImg: 'Link to img'
   }
 ];
 
@@ -43,10 +43,10 @@ const pinsList = [
   }
 ];
 
-let c = -1;
-creatorsList.forEach(creator => {
-  creator.pins.push(pinsList[++c]._id, pinsList[++c]._id);
-});
+// let c = -1;
+// creatorsList.forEach(creator => {
+//   creator.pins.push(pinsList[++c]._id, pinsList[++c]._id);
+// });
 
 function seed(done) {
   const { pins, creators } = mongoose.connection.collections;

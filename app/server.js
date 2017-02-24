@@ -97,7 +97,8 @@ app.get('/auth/logout', (req, res) => {
 // Mock the loggded in user.
 if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
-    req.user = req.headers['x-test-user'];
+    req.user = req.headers['x-test-user'] && JSON.parse(req.headers['x-test-user']);
+    // console.log('req.user', req.user);
     next();
   });
 }

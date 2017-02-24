@@ -20,6 +20,11 @@ describe('Test /api/pins router', () => {
     seed(done);
   });
 
+  const user = {
+    _id: creatorsList[0]._id,
+    username: creatorsList[0].username
+  };
+
   describe('GET /api/pins', () => {
 
     it('Should get all pins', (done) => {
@@ -47,12 +52,10 @@ describe('Test /api/pins router', () => {
       imageUrl: 'https://example.com/image.png'
     }
 
-    const username = creatorsList[0].username;
-
     it('Should add a pin', (done) => {
       app
       .post('/api/pins')
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .send(newPin)
       .expect(200)
       .end(err => {
@@ -63,11 +66,6 @@ describe('Test /api/pins router', () => {
           expect(pins[4].caption).toBe(newPin.caption);
           expect(pins[4].imageUrl).toBe(newPin.imageUrl);
           expect(pins[4]._creator).toEqual(creatorsList[0]._id);
-          return Creator.findOne({username})
-        })
-        .then(creator => {
-          expect(creator.pins.length).toBe(3);
-          expect(creator.pins[2]).toBeAn('object');
           done();
         })
         .catch(e => done(e));
@@ -85,7 +83,7 @@ describe('Test /api/pins router', () => {
     it('Should not add pin if imageUrl is missing', (done) => {
       app
       .post('/api/pins/')
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .send({caption: newPin.caption})
       .expect(400)
       .end(err => {
@@ -97,7 +95,7 @@ describe('Test /api/pins router', () => {
     it('Should not add pin if caption is missing', (done) => {
       app
       .post('/api/pins/')
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .send({imageUrl: newPin.imageUrl})
       .expect(400)
       .end(err => {
@@ -109,7 +107,7 @@ describe('Test /api/pins router', () => {
     it('Should not add pin if both caption and imageUrl are missing', (done) => {
       app
       .post('/api/pins')
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .send({})
       .expect(400)
       .end(err => {
@@ -121,12 +119,10 @@ describe('Test /api/pins router', () => {
 
   describe('DELETE /api/pins/:id', () => {
 
-    const username = creatorsList[0].username;
-
     it('Should delete my a pin by id', (done) => {
       app
       .delete(`/api/pins/${pinsList[0]._id}`)
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .expect(200)
       .end(err => {
         if (err) done(err);
@@ -135,12 +131,6 @@ describe('Test /api/pins router', () => {
         .then(pins => {
           expect(pins.length).toBe(pinsList.length - 1);
           expect(pins.indexOf(pinsList[0]._id)).toBe(-1);
-
-          return Creator.findOne({username})
-        })
-        .then(creator => {
-          expect(creator.pins.length).toBe(1);
-          expect(creator.pins[0]).toEqual(pinsList[1]._id)
           done();
         })
         .catch(e => done(e));
@@ -157,7 +147,7 @@ describe('Test /api/pins router', () => {
     it('Should handle invalid pin id', (done) => {
       app
       .delete('/api/pins/123abc')
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .expect(400)
       .end(err => {
         if (err) return done(err);
@@ -168,12 +158,12 @@ describe('Test /api/pins router', () => {
     it('Should not delete pin I do not own', (done) => {
       app
       .delete(`/api/pins/${pinsList[2]._id}`)
-      .set('x-test-user', username)
+      .set('x-test-user', JSON.stringify(user))
       .expect(400)
       .end(err => {
         if (err) return done(err);
         assertPinCount(done)
       });
     });
-  })
+  });
 });

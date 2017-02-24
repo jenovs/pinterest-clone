@@ -6,19 +6,10 @@ mongoose.Promise = global.Promise;
 const CreatorSchema = new Schema({
   username: {
     type: String,
-    unique: true
+    unique: true,
+    required: true
   },
-  profileImg: {
-    type: String
-  },
-  pins: [{
-    type: Schema.Types.ObjectId,
-    ref: 'pin'
-  }],
-  iLiked: [{
-    type: Schema.Types.ObjectId,
-    ref: 'pin'
-  }]
+  profileImg: String
 });
 
 module.exports = mongoose.model('creator', CreatorSchema);

@@ -19,20 +19,16 @@ function addPin (req, res) {
   if (!req.user) return res.status(401).send();
   const { caption, imageUrl } = req.body
   if (!caption || !imageUrl) return res.status(400).send();
-  const username = req.user;
-  let updCreator;
+  const username = req.user.username;
+  // let updCreator;
+  // console.log(req.user._id);
   const newPin = new Pin({
     imageUrl,
-    caption
+    caption,
+    _creator: req.user._id
   });
 
-  Creator.findOne({username})
-  .then(creator => {
-    updCreator = creator;
-    newPin._creator = updCreator._id;
-    updCreator.pins.push(newPin);
-    return Promise.all([updCreator.save(), newPin.save()])
-  })
+  Promise.resolve(newPin.save())
   .then(() => {
     res.send();
   })
@@ -44,30 +40,20 @@ function addPin (req, res) {
 
 function deletePin (req, res) {
   if (!req.user) return res.status(401).send();
-  // console.log('deleting pin...', req.params.id);
-  const pinId = req.params.id;
-  const username = req.user;
-  // let updCreator, pinInd;
-  Creator.findOne({username})
-  .then(creator => {
-    // console.log(creator);
-    const pinInd = creator.pins.indexOf(pinId);
-    if (!~pinInd) throw 400;
-    // updCreator = creator;
-    creator.pins.splice(pinInd, 1);
-    return Promise.all([
-      Pin.findByIdAndRemove(pinId),
-      creator.save()
-    ]);
+
+  Pin.findOneAndRemove({
+    _id: req.params.id,
+    _creator: req.user._id
   })
-  .then(() => {
+  .then((data) => {
+    if (!data) throw 400;
+    console.log(data);
     res.send();
   })
   .catch(e => {
     // console.log(e);
     res.status(400).send()
   })
-  // res.send(`pin ${req.params.id} deleted`)
 }
 
 module.exports = {
