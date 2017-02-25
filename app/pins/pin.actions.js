@@ -30,6 +30,7 @@ function addPin (req, res) {
   Promise.resolve(newPin.save())
   .then(() => {
     res.send();
+    emitUpdate(req);
   })
   .catch(e => {
     console.log(e);
@@ -47,6 +48,7 @@ function deletePin(req, res) {
   .then((data) => {
     if (!data) throw 400;
     res.send();
+    emitUpdate(req);
   })
   .catch(e => {
     // console.log(e);
@@ -56,7 +58,7 @@ function deletePin(req, res) {
 
 function toggleLike(req, res) {
   if (!req.user) return res.status(401).send();
-  
+
   Pin.findById(req.params.id)
   .then(pin => {
     const likedId = pin.likedBy.indexOf(req.user._id)
@@ -64,7 +66,10 @@ function toggleLike(req, res) {
     else pin.likedBy.splice(likedId, 1);
     return pin.save();
   })
-  .then(() => res.send())
+  .then(() => {
+    res.send();
+    emitUpdate(req);
+  })
   .catch(e => {
     console.log(e);
     res.status(400).send();

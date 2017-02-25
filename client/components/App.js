@@ -1,10 +1,10 @@
 import React from 'react';
 import Masonry from 'react-masonry-component'
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 
 import Pin from './Pin';
 
-// const socket = io();
+const socket = io();
 
 const masonryOptions = {
   transitionDuration: 100
@@ -25,11 +25,19 @@ export default class App extends React.Component {
       pins: [],
       user: null
     }
+
+    this.addPin = this.addPin.bind(this);
   }
 
   componentWillMount() {
     this.fetchPins();
     this.fetchUser();
+  }
+
+  componentDidMount() {
+    socket.on('update', () => {
+      this.fetchPins();
+    })
   }
 
   fetchPins() {
@@ -51,6 +59,27 @@ export default class App extends React.Component {
     .then(json => this.setState({
       user: json
     }))
+  }
+
+  addPin(e) {
+    e.nativeEvent.preventDefault();
+    const imageUrl = this.refs.imageUrl.value;
+    const caption = this.refs.caption.value;
+    if (!imageUrl || !caption) return;
+    console.log('adding pin', imageUrl, caption);
+    const newPin = {
+      imageUrl,
+      caption
+    }
+    fetch('/api/pins', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-user': JSON.stringify(user)
+      },
+      body: JSON.stringify(newPin)
+    })
   }
 
   render() {
@@ -76,6 +105,13 @@ export default class App extends React.Component {
 
     return (
       <div className="app__container">
+        <div>
+          <form onSubmit={this.addPin}>
+            <input type="url" name="imageUrl" ref="imageUrl" placeholder="Image URL"/>
+            <input type="text" name="caption" ref="caption" placeholder="Caption"/>
+            <button type="submit">Add</button>
+          </form>
+        </div>
         <Masonry options={masonryOptions}>
           {parsePins(this.state.pins, this.state.user)}
         </Masonry>
