@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// process.traceDeprecation = true;
+
 module.exports = {
   entry: [
     // fetch polyfill to support iOS

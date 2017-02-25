@@ -1,0 +1,35 @@
+// Based on http://jaydenseric.com/blog/forget-normalize-or-resets-lay-your-own-css-foundation
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  font: 16px/1 sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+a,
+button {
+  color: inherit;
+  transition: 0.3s;
+}
+
+a {
+  text-decoration: none;
+}
+
+::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 0;
+}

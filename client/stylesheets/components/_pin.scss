@@ -1,0 +1,38 @@
+.pin__caption {
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.pin__container {
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 10rem;
+}
+
+.pin__controls {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pin__creator {
+  width: 2rem;
+  & img {
+    border-radius: 5px;
+  }
+}
+
+.pin__image {
+  // border: 1px solid gray;
+  // border-radius: 5px;
+
+  & img {
+    border-radius: 5px;
+  }
+}
