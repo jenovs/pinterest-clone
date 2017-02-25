@@ -4,11 +4,8 @@ import LikeIcon from './LikeIcon';
 
 export default class Pin extends React.Component {
   render() {
-    const { caption, imageUrl, creatorImg, liked, likedByMe } = this.props;
-    const cover = {
-      // backgroundImage: `url(${imageUrl})`,
-      // backgroundSize: 'cover'
-    }
+    const { caption, imageUrl, creatorImg, liked, likedByMe, creator, myProfile } = this.props;
+
     console.log('likedByMe', likedByMe);
     return (
       <div className="pin__container">
@@ -17,9 +14,9 @@ export default class Pin extends React.Component {
         </div>
         <div className="pin__caption">{caption}</div>
         <div className="pin__controls">
-          <div className="pin__creator"><img src={creatorImg}/></div>
-          <button>Delete</button>
-          <LikeIcon liked={liked} full={likedByMe}/>
+          <div className="pin__creator" title={`@${creator}`}><img src={creatorImg}/></div>
+          {myProfile && <button>Delete</button>}
+          <LikeIcon liked={liked} full={likedByMe} profile={myProfile}/>
         </div>
       </div>
     )

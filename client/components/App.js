@@ -10,6 +10,12 @@ const masonryOptions = {
   transitionDuration: 100
 }
 
+const user = {
+    "_id" : "58b1938d6d8ccf13af902cd6",
+    "username" : "Jane",
+    "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_3_normal.png"
+}
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -23,6 +29,7 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this.fetchPins();
+    this.fetchUser();
   }
 
   fetchPins() {
@@ -34,7 +41,16 @@ export default class App extends React.Component {
   }
 
   fetchUser() {
-    fetch('/api/users')
+    fetch('/api/users', {
+      credentials: 'include',
+      headers: {
+        'x-test-user': JSON.stringify(user)
+      }
+    })
+    .then(res => res.json())
+    .then(json => this.setState({
+      user: json
+    }))
   }
 
   render() {
@@ -50,8 +66,9 @@ export default class App extends React.Component {
           imageUrl={pin.imageUrl}
           caption={pin.caption}
           creatorImg={pin._creator.profileImg}
+          creator={pin._creator.username}
           liked={pin.likedBy.length}
-          likedByMe={user && pin.likedBy.indexOf(user._id)}
+          likedByMe={user && ~pin.likedBy.indexOf(user._id)}
         />
       )
     )

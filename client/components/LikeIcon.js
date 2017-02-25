@@ -5,8 +5,7 @@ const LikeIcon = (props) => {
   classes += props.full ? 'full' : 'empty';
   return (
     <div className="like-icon__like">
-      <i className={classes}/> &times; {props.liked}
-      {/* <i className={classes}/> &times; 1000 */}
+      <i className={classes}/>{!props.profile && ` \xD7 ${props.liked}`}
     </div>
   )
 }
