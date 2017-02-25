@@ -11,7 +11,8 @@ const session = require('express-session');
 const mongoose = require('./mongoose');
 const bodyParser = require('body-parser');
 
-const pins = require('./pins/pin.routes')
+const pins = require('./pins/pin.routes');
+const users = require('./creators/creator.routes');
 
 const { seed, usersList, booksList } = require('./seed/seed');
 
@@ -99,6 +100,7 @@ if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/pins', pins);
+app.use('/api/users', users);
 
 // Seed db
 const done = () => {};
