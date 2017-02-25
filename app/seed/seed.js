@@ -1,7 +1,7 @@
 const { ObjectID } = require('mongodb');
 const mongoose = require('./../mongoose');
 const Pin = require('./../pins/pin.model');
-const Creator = require('./../models/creator');
+const Creator = require('./../creators/creator.model');
 
 const creator0Id = new ObjectID();
 const creator1Id = new ObjectID();
