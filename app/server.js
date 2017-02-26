@@ -33,13 +33,16 @@ if (process.env.NODE_ENV !== 'test') {
   function(token, tokenSecret, profile, done) {
     // console.log(profile._json);
     const d = profile._json;
-
-    const user = new Creator({
-      username: d.screen_name,
-      profileImg: d.profile_image_url_https
+    Creator.findOne({username: d.screen_name})
+    .then(user => {
+      if (!user) {
+        const newUser = new Creator({
+          username: d.screen_name,
+          profileImg: d.profile_image_url_https
+        })
+        newUser.save()
+      }
     })
-
-    user.save()
     .then(() => {
       done(null, d.screen_name);
     })

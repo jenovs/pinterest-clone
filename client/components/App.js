@@ -56,14 +56,24 @@ export default class App extends React.Component {
     .then(res => res.json())
     .then(json => {
       let myPins = [];
+      let filteredPins = this.state.filteredPins;
+
+      // console.log('fetchPins, state', this.state);
 
       if (this.state.user) {
         myPins = this.filterByUser(json, this.state.user.username);
       }
 
-      console.log('myPins', myPins);
+      if (this.state.showUserPins) {
+        // console.log('showUserPins', showUserPins);
+        filteredPins = this.filterByUser(json, this.state.showUserPins);
+      }
+
+      // console.log('myPins', myPins);
+      // console.log('filteredPins', filteredPins);
       this.setState({
         myPins,
+        filteredPins,
         pins: json
       })
     })
@@ -159,6 +169,7 @@ export default class App extends React.Component {
   }
 
   toggleLike(id) {
+    console.log('toggleLike', id);
     fetch(`/api/pins/${id}`, {
       credentials: 'include',
       headers: {
