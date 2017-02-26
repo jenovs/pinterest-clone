@@ -8,7 +8,9 @@ const masonryOptions = {
 }
 
 export default class Home extends React.Component {
+
   render() {
+    console.log('Home, props', this.props);
 
     function parsePins(pins, user) {
       console.log('parsing');
@@ -38,9 +40,11 @@ export default class Home extends React.Component {
             </form>
           )}
         </div>
-        <Masonry options={masonryOptions}>
-          {parsePins(this.props.pins, this.props.user)}
-        </Masonry>
+        <div>
+          <Masonry options={masonryOptions}>
+            {parsePins(this.props.pins, this.props.user)}
+          </Masonry>
+        </div>
       </div>
     )
   }

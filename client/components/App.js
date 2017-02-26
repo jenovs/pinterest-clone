@@ -21,10 +21,12 @@ export default class App extends React.Component {
       pins: [],
       myPins: [],
       user: null,
-      profile: false
+      showMyPins: false
     }
 
     this.addPin = this.addPin.bind(this);
+    this.showMyPins = this.showMyPins.bind(this);
+    this.showAllPins = this.showAllPins.bind(this);
   }
 
   componentWillMount() {
@@ -87,11 +89,26 @@ export default class App extends React.Component {
     })
   }
 
+  showMyPins() {
+    console.log('showMyPins');
+    this.setState({
+      showMyPins: true
+    })
+  }
+
+  showAllPins() {
+    console.log('showAllPins');
+    this.setState({
+      showMyPins: false
+    })
+  }
+
   render() {
     console.log('state', this.state);
     const props = {
       user: this.state.user,
-      pins: this.state.pins
+      pins: this.state.pins,
+      myPinsOnly: this.state.showMyPins,
     };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
 
@@ -99,7 +116,11 @@ export default class App extends React.Component {
 
     return (
       <div className="app__container">
-        <Navbar user={this.state.user}/>
+        <Navbar
+          user={this.state.user}
+          showMyPins={this.showMyPins}
+          showAllPins={this.showAllPins}
+        />
         <div className="app__content">
           {childrenWithProps}
         </div>
