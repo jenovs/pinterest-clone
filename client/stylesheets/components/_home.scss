@@ -1,7 +1,6 @@
 @import "./../base/colors";
 
 .home__container {
-  // background-color: red;
   margin: auto;
   max-width: 1300px;
   width: 80%;
@@ -23,10 +22,10 @@
   & input {
     border: 1px solid gray;
     border-radius: 5px;
+    box-shadow: none;
     font-size: 1rem;
     margin: 0.5rem;
     padding: 0.2rem;
-    // outline: none;
   }
 
   & button {
@@ -35,7 +34,7 @@
     border-radius: 2px;
     box-shadow: none;
     color: $button-text-color;
-    // height: 1.5rem;
+    font-weight: bold;
     padding: 0.2rem 0.5rem;
   }
 }

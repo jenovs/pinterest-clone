@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 export default class Navbar extends React.Component {
   render() {
     const { user, showMyPins, showUserPins, showAllPins, handleShowMyPins } = this.props;
-    console.log('navbar, props', this.props);
     let linkActive = 'navbar__link--active';
     let linkInactive = 'navbar__link--inactive';
+    
     return (
       <div className="navbar__container">
         <ul className="navbar">

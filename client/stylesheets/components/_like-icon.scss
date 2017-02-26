@@ -10,10 +10,6 @@
   &:hover {
     border: 1px solid gray;
     box-shadow: 0 0 3px black;
-    // transition: all 0.3s;
-
-    // transform: scale(0.99);
-    // text-shadow: 0 0 2px red;
 
     .like-icon__like--icon-empty,
     .like-icon__like--icon-full {
@@ -23,13 +19,8 @@
   }
 
   &:active {
-    // border: 1px solid #eee;
     box-shadow: none;
   }
-
-  // &:hover {
-  //   background-color: #eee;
-  // }
 }
 
 .like-icon__like--disabled {
@@ -38,22 +29,9 @@
 
 .like-icon__like--icon-empty {
   color: #eee;
-  // color: red;
   text-shadow: 0 0 2px black;
-
-  // &:hover {
-  //   transform: scale(0.5);
-  //   text-shadow: 0 0 2px red;
-  // }
 }
 
 .like-icon__like--icon-full {
   color: red;
-  // color: red;
-  // text-shadow: 0 0 2px black;
-  // &:hover {
-  //   transform: scale(1.2);
-  //   // text-shadow: 0 0 2px red;
-  // }
-
 }

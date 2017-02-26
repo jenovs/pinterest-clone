@@ -5,7 +5,6 @@ import LikeIcon from './LikeIcon';
 export default class Pin extends React.Component {
 
   deletePin() {
-    console.log('Pin, deletePin');
     this.props.deletePin(this.props.user.username)
   }
 

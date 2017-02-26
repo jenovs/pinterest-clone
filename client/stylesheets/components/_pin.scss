@@ -1,5 +1,4 @@
 .pin__caption {
-  // border: 1px dotted gray;
   box-shadow: 0 0 2px gray;
   border-radius: 5px;
   margin: 0.5rem 0;
@@ -26,7 +25,16 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  // padding: 0 0.5rem;
+
+  & button {
+    background-color: $button-delete-color;
+    border: 1px solid gray;
+    border-radius: 2px;
+    box-shadow: none;
+    color: $button-delete-text-color;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+  }
 }
 
 .pin__creator {
@@ -36,16 +44,11 @@
   }
   &:hover {
     transform: scale(1.1);
-    // border: 1px solid gray;
-    // box-shadow: 0 0 3px black;
     transition: all 0.2s;
   }
 }
 
 .pin__image {
-  // border: 1px solid gray;
-  // border-radius: 5px;
-
   & img {
     border-radius: 5px;
   }

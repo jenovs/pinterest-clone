@@ -6,18 +6,6 @@ import Navbar from './Navbar';
 
 const socket = io();
 
-// const user = {
-//     "_id" : "58b1938d6d8ccf13af902cd6",
-//     "username" : "Jane",
-//     "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_3_normal.png"
-// }
-
-// const user = {
-//     "_id" : "58b1938d6d8ccf13af902cd7",
-//     "username" : "John",
-//     "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
-// }
-
 export default class App extends React.Component {
 
   constructor(props) {
@@ -58,19 +46,14 @@ export default class App extends React.Component {
       let myPins = [];
       let filteredPins = this.state.filteredPins;
 
-      // console.log('fetchPins, state', this.state);
-
       if (this.state.user) {
         myPins = this.filterByUser(json, this.state.user.username);
       }
 
       if (this.state.showUserPins) {
-        // console.log('showUserPins', showUserPins);
         filteredPins = this.filterByUser(json, this.state.showUserPins);
       }
 
-      // console.log('myPins', myPins);
-      // console.log('filteredPins', filteredPins);
       this.setState({
         myPins,
         filteredPins,
@@ -81,14 +64,10 @@ export default class App extends React.Component {
 
   fetchUser() {
     fetch('/api/users', {
-      credentials: 'include',
-      headers: {
-        // 'x-test-user': JSON.stringify(user)
-      }
+      credentials: 'include'
     })
     .then(res => res.json())
     .then(user => {
-      console.log('user', user);
       if (!user) throw Error;
       this.setState({
         user
@@ -106,7 +85,6 @@ export default class App extends React.Component {
 
   addPin(imageUrl, caption) {
     if (!imageUrl || !caption) return;
-    console.log('adding pin', imageUrl, caption);
     const newPin = {
       imageUrl,
       caption
@@ -115,15 +93,13 @@ export default class App extends React.Component {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        // 'x-test-user': JSON.stringify(user)
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(newPin)
     })
   }
 
   showMyPins() {
-    console.log('showMyPins');
     if (!this.state.user) return;
     this.setState({
       showMyPins: true,
@@ -133,7 +109,6 @@ export default class App extends React.Component {
   }
 
   showAllPins() {
-    console.log('showAllPins');
     this.setState({
       showMyPins: false,
       showUserPins: null,
@@ -142,49 +117,38 @@ export default class App extends React.Component {
   }
 
   deletePin(id, username) {
-    console.log('deletePin', id, username);
     const { user } = this.state
     if (!user || user.username !== username) return;
 
     fetch(`/api/pins/${id}`, {
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        // 'x-test-user': JSON.stringify(user)
-      },
-      method: 'DELETE',
+      method: 'DELETE'
     })
     .catch();
   }
 
   showUserGallery(username) {
-    console.log('showing user gallery', username);
     const { user, pins } = this.state;
     if (user && user.username === username) return this.showMyPins();
     const filteredPins = this.filterByUser(pins, username);
-    console.log(filteredPins);
+
     this.setState({
       filteredPins,
       showUserPins: username
-    })
+    });
   }
 
   toggleLike(id) {
     if (!this.state.user) return;
-    console.log('toggleLike', id);
+
     fetch(`/api/pins/${id}`, {
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        // 'x-test-user': JSON.stringify(user)
-      },
-      method: 'PUT',
+      method: 'PUT'
     })
     .catch(e => e);
   }
 
   render() {
-    console.log('state', this.state);
     const props = {
       user: this.state.user,
       pins: this.state.pins,

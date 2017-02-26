@@ -31,7 +31,6 @@ if (process.env.NODE_ENV !== 'test') {
     callbackURL: TW_CALLBACK_URL
   },
   function(token, tokenSecret, profile, done) {
-    console.log(profile._json);
     const d = profile._json;
     Creator.findOne({username: d.screen_name})
     .then(user => {
@@ -69,15 +68,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser', user);
+  // console.log('serializeUser', user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log('deserializeUser', user);
+  // console.log('deserializeUser', user);
   Creator.findOne({username: user}, '_id username')
   .then(user => {
-    console.log('user', user)
     done(null, user);
   })
 });
@@ -87,21 +85,7 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback',
   passport.authenticate('twitter', {failureRedirect: '/fail'}),
   (req, res, next) => {
-    console.log('req.user', req.user);
     res.redirect('/');
-
-    // Creator.findOne({username: req.user})
-    // .then(user => {
-    //   if(!user) {
-    //     const newUser = new Creator({
-    //       username: req.user
-    //     })
-    //     return newUser.save();
-    //   }
-    // })
-    // .then(() => {
-    //   res.redirect('/');
-    // })
   }
 );
 
@@ -110,9 +94,8 @@ app.get('/auth/logout', (req, res) => {
   res.redirect('/')
 });
 
-// Temp hack to do testing.
-// Mock the loggded in user.
-if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development_') {
+// Mock the loggded in user for testing.
+if (process.env.NODE_ENV === 'test') {
   app.use((req, res, next) => {
     req.user = req.headers['x-test-user'] && JSON.parse(req.headers['x-test-user']);
     // console.log('req.user', req.user);
@@ -124,11 +107,11 @@ app.use('/api/pins', pins);
 app.use('/api/users', users);
 
 // Seed db
-const done = () => {};
-app.use('/api/seed', (req, res) => {
-  seed(done);
-  res.send('Seed OK');
-});
+// const done = () => {};
+// app.use('/api/seed', (req, res) => {
+//   seed(done);
+//   res.send('Seed OK');
+// });
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
