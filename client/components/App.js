@@ -12,11 +12,11 @@ const socket = io();
 //     "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_3_normal.png"
 // }
 
-const user = {
-    "_id" : "58b1938d6d8ccf13af902cd7",
-    "username" : "John",
-    "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
-}
+// const user = {
+//     "_id" : "58b1938d6d8ccf13af902cd7",
+//     "username" : "John",
+//     "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
+// }
 
 export default class App extends React.Component {
 
@@ -73,13 +73,15 @@ export default class App extends React.Component {
     fetch('/api/users', {
       credentials: 'include',
       headers: {
-        'x-test-user': JSON.stringify(user)
+        // 'x-test-user': JSON.stringify(user)
       }
     })
     .then(res => res.json())
-    .then(json => {
+    .then(user => {
+      console.log('user', user);
+      if (!user) throw Error;
       this.setState({
-        user: json
+        user
       }, this.fetchPins)
     })
     .catch(e => {
@@ -104,7 +106,7 @@ export default class App extends React.Component {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'x-test-user': JSON.stringify(user)
+        // 'x-test-user': JSON.stringify(user)
       },
       body: JSON.stringify(newPin)
     })
@@ -138,7 +140,7 @@ export default class App extends React.Component {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'x-test-user': JSON.stringify(user)
+        // 'x-test-user': JSON.stringify(user)
       },
       method: 'DELETE',
     })
@@ -161,7 +163,7 @@ export default class App extends React.Component {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'x-test-user': JSON.stringify(user)
+        // 'x-test-user': JSON.stringify(user)
       },
       method: 'PUT',
     })

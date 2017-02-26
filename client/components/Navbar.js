@@ -9,7 +9,7 @@ export default class Navbar extends React.Component {
       <div className="navbar__container">
         <ul className="navbar">
           <li>
-            {user && <span onClick={showAllPins}>All Pins</span>}
+            <span onClick={showAllPins}>All Pins</span>
           </li>
           <li>
             {user && <span onClick={showMyPins}>My Pins</span>}

@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 
 const pins = require('./pins/pin.routes');
 const users = require('./creators/creator.routes');
+const Creator = require('./creators/creator.model');
 
 const { seed, usersList, booksList } = require('./seed/seed');
 
@@ -30,7 +31,18 @@ if (process.env.NODE_ENV !== 'test') {
     callbackURL: TW_CALLBACK_URL
   },
   function(token, tokenSecret, profile, done) {
-    done(null, profile.username);
+    // console.log(profile._json);
+    const d = profile._json;
+
+    const user = new Creator({
+      username: d.screen_name,
+      profileImg: d.profile_image_url_https
+    })
+
+    user.save()
+    .then(() => {
+      done(null, d.screen_name);
+    })
   }
 ));
 }
@@ -54,35 +66,41 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  // console.log('serializeUser', user);
+  console.log('serializeUser', user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  // console.log('deserializeUser', user);
-  done(null, user);
+  console.log('deserializeUser', user);
+  Creator.findOne({username: user}, '_id username')
+  .then(user => {
+    console.log('user', user)
+    done(null, user);
+  })
 });
 
-// app.get('/auth/twitter', passport.authenticate('twitter'));
-//
-// app.get('/auth/twitter/callback',
-//   passport.authenticate('twitter', {failureRedirect: '/fail'}),
-//   (req, res, next) => {
-//     // console.log(req.user);
-//     User.findOne({username: req.user})
-//     .then(user => {
-//       if(!user) {
-//         const newUser = new User({
-//           username: req.user
-//         })
-//         return newUser.save();
-//       }
-//     })
-//     .then(() => {
-//       res.redirect('/');
-//     })
-//   }
-// );
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback',
+  passport.authenticate('twitter', {failureRedirect: '/fail'}),
+  (req, res, next) => {
+    console.log('req.user', req.user);
+    res.redirect('/');
+
+    // Creator.findOne({username: req.user})
+    // .then(user => {
+    //   if(!user) {
+    //     const newUser = new Creator({
+    //       username: req.user
+    //     })
+    //     return newUser.save();
+    //   }
+    // })
+    // .then(() => {
+    //   res.redirect('/');
+    // })
+  }
+);
 
 app.get('/auth/logout', (req, res) => {
   req.logout();
@@ -91,7 +109,7 @@ app.get('/auth/logout', (req, res) => {
 
 // Temp hack to do testing.
 // Mock the loggded in user.
-if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development_') {
   app.use((req, res, next) => {
     req.user = req.headers['x-test-user'] && JSON.parse(req.headers['x-test-user']);
     // console.log('req.user', req.user);
