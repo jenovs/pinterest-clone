@@ -7,7 +7,7 @@ const LikeIcon = (props) => {
   divClass += props.user ? '' : '--disabled'
   return (
     <div className={divClass}>
-      <i className={iconClass}/>{!props.profile && ` \xD7 ${props.liked}`}
+      <i className={iconClass}/>{!props.myPinsOnly && ` \xD7 ${props.liked}`}
     </div>
   )
 }

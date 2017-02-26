@@ -20,19 +20,23 @@ export default class App extends React.Component {
     this.state = {
       pins: [],
       myPins: [],
+      filteredPins: [],
       user: null,
-      showMyPins: false
+      showMyPins: false,
+      showUserPins: null
     }
 
     this.addPin = this.addPin.bind(this);
-    this.filterMyPins = this.filterMyPins.bind(this);
+    this.filterByUser = this.filterByUser.bind(this);
     this.showMyPins = this.showMyPins.bind(this);
     this.showAllPins = this.showAllPins.bind(this);
+    this.deletePin = this.deletePin.bind(this);
+    this.showUserGallery = this.showUserGallery.bind(this);
   }
 
   componentWillMount() {
-    this.fetchPins();
     this.fetchUser();
+    // this.fetchPins();
   }
 
   componentDidMount() {
@@ -45,7 +49,15 @@ export default class App extends React.Component {
     fetch('/api/pins')
     .then(res => res.json())
     .then(json => {
+      let myPins = [];
+
+      if (this.state.user) {
+        myPins = this.filterByUser(json, this.state.user.username);
+      }
+
+      console.log('myPins', myPins);
       this.setState({
+        myPins,
         pins: json
       })
     })
@@ -59,22 +71,28 @@ export default class App extends React.Component {
       }
     })
     .then(res => res.json())
-    .then(json => this.setState({
-      user: json
-    }))
-    .catch(e => e);
+    .then(json => {
+      this.setState({
+        user: json
+      }, this.fetchPins)
+    })
+    .catch(e => {
+      this.fetchPins();
+      console.log(e);
+    });
   }
 
-  filterMyPins() {
-    const { pins, user } = this.state;
-    if (!user) return [];
-    return pins.filter(pin => pin._creator.username === user.username);
+  filterByUser(pins, username) {
+    console.log('filtering pins for', username);
+    // const { pins, user } = this.state;
+    // if (!username) return [];
+    return pins.filter(pin => pin._creator.username === username);
+    // this.setState({
+    //   myPins
+    // })
   }
 
-  addPin(e) {
-    e.nativeEvent.preventDefault();
-    const imageUrl = this.refs.imageUrl.value;
-    const caption = this.refs.caption.value;
+  addPin(imageUrl, caption) {
     if (!imageUrl || !caption) return;
     console.log('adding pin', imageUrl, caption);
     const newPin = {
@@ -95,9 +113,8 @@ export default class App extends React.Component {
   showMyPins() {
     console.log('showMyPins');
     if (!this.state.user) return;
-    const myPins = this.filterMyPins();
+    // const myPins = this.state.myPins;
     this.setState({
-      myPins,
       showMyPins: true
     })
   }
@@ -105,7 +122,36 @@ export default class App extends React.Component {
   showAllPins() {
     console.log('showAllPins');
     this.setState({
-      showMyPins: false
+      showMyPins: false,
+      showUserPins: null,
+      filteredPins: []
+    })
+  }
+
+  deletePin(id, username) {
+    console.log('deletePin', id, username);
+    const { user } = this.state
+    if (!user || user.username !== username) return;
+
+    fetch(`/api/pins/${id}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-user': JSON.stringify(user)
+      },
+      method: 'DELETE',
+    })
+  }
+
+  showUserGallery(username) {
+    console.log('showing user gallery', username);
+    const { user, pins } = this.state;
+    if (user && user.username === username) return this.showMyPins();
+    const filteredPins = this.filterByUser(pins, username);
+    console.log(filteredPins);
+    this.setState({
+      filteredPins,
+      showUserPins: username
     })
   }
 
@@ -115,7 +161,12 @@ export default class App extends React.Component {
       user: this.state.user,
       pins: this.state.pins,
       myPins: this.state.myPins,
-      myPinsOnly: this.state.showMyPins
+      filteredPins: this.state.filteredPins,
+      myPinsOnly: this.state.showMyPins,
+      addPin: this.addPin,
+      deletePin: this.deletePin,
+      showUserGallery: this.showUserGallery,
+      showUserPins: this.state.showUserPins
     };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
 
