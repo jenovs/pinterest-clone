@@ -1,5 +1,5 @@
 const Pin = require('./pin.model');
-const { emitUpdate } = require('./../helpers');
+const { emitUpdate, validateImageUrl } = require('./../helpers');
 
 function getPins (req, res) {
   Pin.find()
@@ -16,18 +16,21 @@ function getPins (req, res) {
 
 function addPin (req, res) {
   if (!req.user) return res.status(401).send();
-  const { caption, imageUrl } = req.body
+  let { caption, imageUrl } = req.body
   if (!caption || !imageUrl) return res.status(400).send();
   const username = req.user.username;
-  // let updCreator;
-  // console.log(req.user._id);
-  const newPin = new Pin({
-    imageUrl,
-    caption,
-    _creator: req.user._id
-  });
-
-  Promise.resolve(newPin.save())
+  validateImageUrl(imageUrl)
+  .then(valid => {
+    imageUrl = valid ? imageUrl : '/img/placeholder.png'
+  })
+  .then(() => {
+    const newPin = new Pin({
+      imageUrl,
+      caption,
+      _creator: req.user._id
+    });
+    Promise.resolve(newPin.save())
+  })
   .then(() => {
     res.send();
     emitUpdate(req);
