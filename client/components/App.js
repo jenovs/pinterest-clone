@@ -36,7 +36,6 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this.fetchUser();
-    // this.fetchPins();
   }
 
   componentDidMount() {
@@ -83,13 +82,7 @@ export default class App extends React.Component {
   }
 
   filterByUser(pins, username) {
-    console.log('filtering pins for', username);
-    // const { pins, user } = this.state;
-    // if (!username) return [];
     return pins.filter(pin => pin._creator.username === username);
-    // this.setState({
-    //   myPins
-    // })
   }
 
   addPin(imageUrl, caption) {
@@ -113,9 +106,10 @@ export default class App extends React.Component {
   showMyPins() {
     console.log('showMyPins');
     if (!this.state.user) return;
-    // const myPins = this.state.myPins;
     this.setState({
-      showMyPins: true
+      showMyPins: true,
+      showUserPins: null,
+      filteredPins: []
     })
   }
 
@@ -169,8 +163,6 @@ export default class App extends React.Component {
       showUserPins: this.state.showUserPins
     };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
-
-
 
     return (
       <div className="app__container">

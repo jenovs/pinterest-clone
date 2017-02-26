@@ -24,8 +24,6 @@ export default class Pin extends React.Component {
       showUserPins
     } = this.props;
 
-    // console.log('likedByMe', likedByMe);
-    // console.log('myProfile', myPinsOnly);
     return (
       <div className="pin__container">
         <div className="pin__image">

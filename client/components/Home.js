@@ -10,14 +10,15 @@ const masonryOptions = {
 export default class Home extends React.Component {
 
   parsePins() {
-    // console.log('parsing', this.props);
     const { user, myPinsOnly, showUserPins } = this.props;
     let pins = this.props.pins;
+    
     if (myPinsOnly) {
       pins = this.props.myPins;
     } else if (showUserPins) {
       pins = this.props.filteredPins
     }
+
     return pins.map((pin, i) => (
       <Pin
         key={i}
@@ -48,9 +49,6 @@ export default class Home extends React.Component {
   }
 
   render() {
-    // console.log('Home, props', this.props);
-
-
     return (
       <div>
         <div>
