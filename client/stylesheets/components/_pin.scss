@@ -1,5 +1,6 @@
 .pin__caption {
-  border: 1px solid gray;
+  // border: 1px dotted gray;
+  box-shadow: 0 0 2px gray;
   border-radius: 5px;
   margin: 0.5rem 0;
   padding: 0.5rem;
@@ -9,9 +10,15 @@
 .pin__container {
   border: 1px solid gray;
   border-radius: 5px;
-  margin: 0.5rem;
+  box-shadow: 0 0 5px gray;
+  margin: 0.5rem auto;
   padding: 0.5rem;
-  width: 10rem;
+  width: 100%;
+
+  @media (min-width: 400px) {
+    margin: 0.5rem;
+    width: 12rem;
+  }
 }
 
 .pin__controls {
@@ -26,6 +33,12 @@
   width: 2rem;
   & img {
     border-radius: 5px;
+  }
+  &:hover {
+    transform: scale(1.1);
+    // border: 1px solid gray;
+    // box-shadow: 0 0 3px black;
+    transition: all 0.2s;
   }
 }
 

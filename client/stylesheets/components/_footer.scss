@@ -1,5 +1,8 @@
+@import "./../base/colors";
+
 footer {
   background-color: $base-color;
+  box-shadow: 0 -1px 2px $base-dark-color;
   color: $base-font-color;
   font-size: 1rem;
   font-weight: bold;
@@ -11,6 +14,6 @@ footer {
 footer a,
 footer a:hover,
 footer a:active {
-  color: blue;
+  color: $footer-link-color;
   text-decoration: none;
 }

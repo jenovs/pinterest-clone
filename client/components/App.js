@@ -154,6 +154,7 @@ export default class App extends React.Component {
       },
       method: 'DELETE',
     })
+    .catch();
   }
 
   showUserGallery(username) {
@@ -169,6 +170,7 @@ export default class App extends React.Component {
   }
 
   toggleLike(id) {
+    if (!this.state.user) return;
     console.log('toggleLike', id);
     fetch(`/api/pins/${id}`, {
       credentials: 'include',
@@ -178,6 +180,7 @@ export default class App extends React.Component {
       },
       method: 'PUT',
     })
+    .catch(e => e);
   }
 
   render() {
@@ -199,8 +202,8 @@ export default class App extends React.Component {
     return (
       <div className="app__container">
         <Navbar
-          user={this.state.user}
-          showMyPins={this.showMyPins}
+          {...this.state}
+          handleShowMyPins={this.showMyPins}
           showAllPins={this.showAllPins}
         />
         <div className="app__content">

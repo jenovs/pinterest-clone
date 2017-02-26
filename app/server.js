@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'test') {
     callbackURL: TW_CALLBACK_URL
   },
   function(token, tokenSecret, profile, done) {
-    // console.log(profile._json);
+    console.log(profile._json);
     const d = profile._json;
     Creator.findOne({username: d.screen_name})
     .then(user => {

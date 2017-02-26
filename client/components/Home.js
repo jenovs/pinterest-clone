@@ -51,14 +51,22 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="home__container">
         <div>
           {this.props.user && (
-            <form onSubmit={this.addPin.bind(this)}>
-              <input type="url" name="imageUrl" ref="imageUrl" placeholder="Image URL"/>
-              <input type="text" name="caption" ref="caption" placeholder="Caption"/>
-              <button type="submit">Add</button>
-            </form>
+            <div className="home__form-container">
+              <form className="home__form" onSubmit={this.addPin.bind(this)}>
+                <div className="home__input-field">
+                  {/* <label htmlFor="imageUrl">Image URL</label> */}
+                  <input type="url" name="imageUrl" ref="imageUrl" placeholder="Image URL" required={true}/>
+                </div>
+                <div className="home__input-field">
+                  {/* <label htmlFor="caption">Caption</label> */}
+                  <input type="text" name="caption" ref="caption" placeholder="Caption" required={true}/>
+                </div>
+                <button type="submit">Add</button>
+              </form>
+            </div>
           )}
         </div>
         <div>

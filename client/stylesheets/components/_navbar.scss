@@ -1,6 +1,10 @@
+@import "./../base/colors";
+
 .navbar__container {
   background-color: $base-color;
   margin-bottom: 1rem;
+  // border-bottom: 1px solid black;
+  box-shadow: 0 1px 2px $base-dark-color;
 }
 
 .navbar {
@@ -16,15 +20,40 @@
   max-width: 1300px;
 
   & > li {
-    margin-right: 0.5rem;
+    margin-right: 0.2rem;
   }
   @media (min-width: 400px) {
     & > li {
-      margin-right: 2rem;
+      // margin-right: 2rem;
     }
   }
 
   & > li:last-child {
     margin-left: auto;
+    margin-right: 2rem;
   }
+}
+
+.navbar__link--active,
+.navbar__link--inactive {
+  // display: inline-block;
+  padding: 0.8rem 1rem;
+  transition: all 0.3s;
+}
+
+.navbar__link--active {
+  // font-size: 1.2rem;
+  // text-decoration: underline;
+  background-color: darken($base-color, 10%);
+  // padding: 0.5rem;
+  // color: red;
+  // font-weight: bold;
+  // text-shadow: 1px 1px 2px gray;
+}
+
+.navbar__link--inactive {
+
+  // &:hover {
+  //   background-color: darken($base-color, 5%);
+  // }
 }
