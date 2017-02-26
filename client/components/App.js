@@ -6,10 +6,16 @@ import Navbar from './Navbar';
 
 const socket = io();
 
+// const user = {
+//     "_id" : "58b1938d6d8ccf13af902cd6",
+//     "username" : "Jane",
+//     "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_3_normal.png"
+// }
+
 const user = {
-    "_id" : "58b1938d6d8ccf13af902cd6",
-    "username" : "Jane",
-    "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_3_normal.png"
+    "_id" : "58b1938d6d8ccf13af902cd7",
+    "username" : "John",
+    "profileImg" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
 }
 
 export default class App extends React.Component {

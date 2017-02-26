@@ -4,6 +4,8 @@ const app = require('./../server-test');
 const expect = require('expect');
 const { seed, creatorsList, pinsList } = require('./../seed/seed');
 const Pin = require('./pin.model');
+
+const { PORT } = process.env;
 // const Creator = require('./../models/creator');
 
 const assertPinCount = (done) => {
@@ -47,9 +49,11 @@ describe('Test /api/pins router', () => {
 
   describe('POST /api/pins', () => {
 
+    // TODO add image validation check
+
     const newPin = {
       caption: 'A new pin',
-      imageUrl: 'https://example.com/image.png'
+      imageUrl: `http://localhost:${3005}/img/test_image.jpg`
     }
 
     it('Should add a pin', (done) => {
