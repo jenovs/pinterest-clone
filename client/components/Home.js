@@ -12,7 +12,7 @@ export default class Home extends React.Component {
   parsePins() {
     const { user, myPinsOnly, showUserPins } = this.props;
     let pins = this.props.pins;
-    
+
     if (myPinsOnly) {
       pins = this.props.myPins;
     } else if (showUserPins) {
@@ -33,6 +33,7 @@ export default class Home extends React.Component {
         myPinsOnly={this.props.myPinsOnly}
         showUserGallery={this.props.showUserGallery}
         showUserPins={this.props.showUserPins}
+        toggleLike={this.props.toggleLike.bind(this, pin._id)}
       />
       )
     )

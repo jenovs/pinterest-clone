@@ -6,7 +6,7 @@ const LikeIcon = (props) => {
   let divClass = 'like-icon__like';
   divClass += props.user ? '' : '--disabled'
   return (
-    <div className={divClass}>
+    <div className={divClass} onClick={props.toggleLike}>
       <i className={iconClass}/>{!props.myPinsOnly && ` \xD7 ${props.liked}`}
     </div>
   )

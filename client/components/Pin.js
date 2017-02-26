@@ -21,7 +21,8 @@ export default class Pin extends React.Component {
       user,
       deletePin,
       showUserGallery,
-      showUserPins
+      showUserPins,
+      toggleLike
     } = this.props;
 
     return (
@@ -38,6 +39,7 @@ export default class Pin extends React.Component {
             full={likedByMe}
             myPinsOnly={myPinsOnly}
             user={user}
+            toggleLike={toggleLike}
           />
         </div>
       </div>

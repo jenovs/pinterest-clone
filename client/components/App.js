@@ -32,6 +32,7 @@ export default class App extends React.Component {
     this.showAllPins = this.showAllPins.bind(this);
     this.deletePin = this.deletePin.bind(this);
     this.showUserGallery = this.showUserGallery.bind(this);
+    this.toggleLike = this.toggleLike.bind(this);
   }
 
   componentWillMount() {
@@ -149,6 +150,17 @@ export default class App extends React.Component {
     })
   }
 
+  toggleLike(id) {
+    fetch(`/api/pins/${id}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-user': JSON.stringify(user)
+      },
+      method: 'PUT',
+    })
+  }
+
   render() {
     console.log('state', this.state);
     const props = {
@@ -160,7 +172,8 @@ export default class App extends React.Component {
       addPin: this.addPin,
       deletePin: this.deletePin,
       showUserGallery: this.showUserGallery,
-      showUserPins: this.state.showUserPins
+      showUserPins: this.state.showUserPins,
+      toggleLike: this.toggleLike
     };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
 
