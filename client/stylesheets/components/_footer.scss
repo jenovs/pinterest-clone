@@ -1,0 +1,16 @@
+footer {
+  background-color: $base-color;
+  color: $base-font-color;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+footer a,
+footer a:hover,
+footer a:active {
+  color: blue;
+  text-decoration: none;
+}

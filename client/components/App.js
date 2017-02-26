@@ -1,14 +1,10 @@
 import React from 'react';
-import Masonry from 'react-masonry-component'
 import io from 'socket.io-client';
 
-import Pin from './Pin';
+import Footer from './Footer';
+import Navbar from './Navbar';
 
 const socket = io();
-
-const masonryOptions = {
-  transitionDuration: 100
-}
 
 const user = {
     "_id" : "58b1938d6d8ccf13af902cd6",
@@ -23,7 +19,9 @@ export default class App extends React.Component {
 
     this.state = {
       pins: [],
-      user: null
+      myPins: [],
+      user: null,
+      profile: false
     }
 
     this.addPin = this.addPin.bind(this);
@@ -43,9 +41,11 @@ export default class App extends React.Component {
   fetchPins() {
     fetch('/api/pins')
     .then(res => res.json())
-    .then(json => this.setState({
-      pins: json
-    }))
+    .then(json => {
+      this.setState({
+        pins: json
+      })
+    })
   }
 
   fetchUser() {
@@ -59,6 +59,11 @@ export default class App extends React.Component {
     .then(json => this.setState({
       user: json
     }))
+    .catch(e => e);
+  }
+
+  filterMyPins() {
+
   }
 
   addPin(e) {
@@ -84,37 +89,21 @@ export default class App extends React.Component {
 
   render() {
     console.log('state', this.state);
-    const props = {};
+    const props = {
+      user: this.state.user,
+      pins: this.state.pins
+    };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
 
-    function parsePins(pins, user) {
-      console.log('parsing');
-      return pins.map((pin, i) => (
-        <Pin
-          key={i}
-          imageUrl={pin.imageUrl}
-          caption={pin.caption}
-          creatorImg={pin._creator.profileImg}
-          creator={pin._creator.username}
-          liked={pin.likedBy.length}
-          likedByMe={user && ~pin.likedBy.indexOf(user._id)}
-        />
-      )
-    )
-  }
+
 
     return (
       <div className="app__container">
-        <div>
-          <form onSubmit={this.addPin}>
-            <input type="url" name="imageUrl" ref="imageUrl" placeholder="Image URL"/>
-            <input type="text" name="caption" ref="caption" placeholder="Caption"/>
-            <button type="submit">Add</button>
-          </form>
+        <Navbar user={this.state.user}/>
+        <div className="app__content">
+          {childrenWithProps}
         </div>
-        <Masonry options={masonryOptions}>
-          {parsePins(this.state.pins, this.state.user)}
-        </Masonry>
+        <Footer />
       </div>
     )
   }

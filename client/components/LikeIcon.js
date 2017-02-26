@@ -1,11 +1,13 @@
 import React from 'react';
 
 const LikeIcon = (props) => {
-  let classes = 'fa fa-heart like-icon__like--icon-'
-  classes += props.full ? 'full' : 'empty';
+  let iconClass = 'fa fa-heart like-icon__like--icon-'
+  iconClass += props.full ? 'full' : 'empty';
+  let divClass = 'like-icon__like';
+  divClass += props.user ? '' : '--disabled'
   return (
-    <div className="like-icon__like">
-      <i className={classes}/>{!props.profile && ` \xD7 ${props.liked}`}
+    <div className={divClass}>
+      <i className={iconClass}/>{!props.profile && ` \xD7 ${props.liked}`}
     </div>
   )
 }

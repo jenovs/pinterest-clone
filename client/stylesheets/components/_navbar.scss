@@ -1,0 +1,30 @@
+.navbar__container {
+  background-color: $base-color;
+  margin-bottom: 1rem;
+}
+
+.navbar {
+  align-items: center;
+  background-color: $base-color;
+  color: $base-font-color;
+  display: flex;
+  font-weight: bold;
+  height: 3rem;
+  justify-content: flex-start;
+  list-style: none;
+  margin: auto;
+  max-width: 1300px;
+
+  & > li {
+    margin-right: 0.5rem;
+  }
+  @media (min-width: 400px) {
+    & > li {
+      margin-right: 2rem;
+    }
+  }
+
+  & > li:last-child {
+    margin-left: auto;
+  }
+}

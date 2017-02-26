@@ -9,7 +9,7 @@
 
   &:hover {
     border: 1px solid gray;
-    box-shadow: 0 0 2px black;
+    box-shadow: 0 0 3px black;
     // transition: all 0.3s;
 
     // transform: scale(0.99);
@@ -22,9 +22,18 @@
     }
   }
 
+  &:active {
+    // border: 1px solid #eee;
+    box-shadow: none;
+  }
+
   // &:hover {
   //   background-color: #eee;
   // }
+}
+
+.like-icon__like--disabled {
+  cursor: not-allowed;
 }
 
 .like-icon__like--icon-empty {
