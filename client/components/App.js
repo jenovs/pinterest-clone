@@ -25,6 +25,7 @@ export default class App extends React.Component {
     }
 
     this.addPin = this.addPin.bind(this);
+    this.filterMyPins = this.filterMyPins.bind(this);
     this.showMyPins = this.showMyPins.bind(this);
     this.showAllPins = this.showAllPins.bind(this);
   }
@@ -65,7 +66,9 @@ export default class App extends React.Component {
   }
 
   filterMyPins() {
-
+    const { pins, user } = this.state;
+    if (!user) return [];
+    return pins.filter(pin => pin._creator.username === user.username);
   }
 
   addPin(e) {
@@ -91,7 +94,10 @@ export default class App extends React.Component {
 
   showMyPins() {
     console.log('showMyPins');
+    if (!this.state.user) return;
+    const myPins = this.filterMyPins();
     this.setState({
+      myPins,
       showMyPins: true
     })
   }
@@ -108,7 +114,8 @@ export default class App extends React.Component {
     const props = {
       user: this.state.user,
       pins: this.state.pins,
-      myPinsOnly: this.state.showMyPins,
+      myPins: this.state.myPins,
+      myPinsOnly: this.state.showMyPins
     };
     const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, props));
 

@@ -9,25 +9,30 @@ const masonryOptions = {
 
 export default class Home extends React.Component {
 
+  parsePins() {
+    console.log('parsing', this.props);
+    const { user, myPinsOnly } = this.props;
+    let pins = this.props.pins;
+    if (myPinsOnly) {
+      pins = this.props.myPins;
+    }
+    return pins.map((pin, i) => (
+      <Pin
+        key={i}
+        imageUrl={pin.imageUrl}
+        caption={pin.caption}
+        creatorImg={pin._creator.profileImg}
+        creator={pin._creator.username}
+        liked={pin.likedBy.length}
+        likedByMe={user && ~pin.likedBy.indexOf(user._id)}
+        user={user}
+      />
+    )
+  )
+}
   render() {
     console.log('Home, props', this.props);
 
-    function parsePins(pins, user) {
-      console.log('parsing');
-      return pins.map((pin, i) => (
-        <Pin
-          key={i}
-          imageUrl={pin.imageUrl}
-          caption={pin.caption}
-          creatorImg={pin._creator.profileImg}
-          creator={pin._creator.username}
-          liked={pin.likedBy.length}
-          likedByMe={user && ~pin.likedBy.indexOf(user._id)}
-          user={user}
-        />
-      )
-    )
-  }
 
     return (
       <div>
@@ -42,7 +47,7 @@ export default class Home extends React.Component {
         </div>
         <div>
           <Masonry options={masonryOptions}>
-            {parsePins(this.props.pins, this.props.user)}
+            {this.parsePins()}
           </Masonry>
         </div>
       </div>

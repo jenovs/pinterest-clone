@@ -15,7 +15,7 @@ export default class Pin extends React.Component {
       user
     } = this.props;
 
-    console.log('likedByMe', likedByMe);
+    // console.log('likedByMe', likedByMe);
     return (
       <div className="pin__container">
         <div className="pin__image">
