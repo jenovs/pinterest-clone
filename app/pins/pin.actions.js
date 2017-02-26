@@ -3,7 +3,7 @@ const { emitUpdate, validateImageUrl } = require('./../helpers');
 
 function getPins (req, res) {
   Pin.find()
-  .sort('_id')
+  .sort('-_id')
   .populate('_creator')
   .then(pins => {
     res.send(pins);
@@ -22,6 +22,10 @@ function addPin (req, res) {
   validateImageUrl(imageUrl)
   .then(valid => {
     imageUrl = valid ? imageUrl : '/img/placeholder.png'
+    return Pin.findOne({imageUrl, _creator: req.user._id})
+  })
+  .then(pin => {
+    if (pin) throw 400;
   })
   .then(() => {
     const newPin = new Pin({
